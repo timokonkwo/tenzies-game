@@ -79,4 +79,9 @@ header {
     border: none;
     color: #fff;
     border-radius: .3rem;
+    cursor: pointer;
+}
+
+.roll__button:active {
+    box-shadow: inset 3px 2px 8px 8px rgba(0, 0, 0, .15);
 }

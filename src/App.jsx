@@ -4,13 +4,23 @@ import { useState } from "react"
 
 function App(){
 
-  
+  // const allNewDice = () => {
+  //   const diceElements = [];
 
-  const allNewDice = () => Array.from({length: 10}, () => Math.ceil(Math.random() * 6))
+
+  // }
+  const allNewDice = () => {
+
+    const elements = Array.from({length: 10}, () => Math.ceil(Math.random() * 6)).map(number => ({value: number, isHeld: false}))
+
+    return elements;
+  
+  }
+  
 
   const [diceValues, setDiceValues] = useState(allNewDice())
 
-  const dice = diceValues.map(value => <Die number={value}/>)
+  const dice = diceValues.map(item => <Die number={item.value}/>)
 
   return (
     <main>
@@ -27,7 +37,12 @@ function App(){
             {dice}
           </div>
 
-          <button className="roll__button">Roll</button>
+          <button 
+            className="roll__button"
+            onClick={() => setDiceValues(allNewDice())}
+          >
+            Roll
+            </button>
         </section>
       </div>
     </main>
