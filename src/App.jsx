@@ -3,6 +3,8 @@ import Die from "./Die"
 
 function App(){
 
+  const allNewDice = () => Array.from({length: 10}, () => Math.floor(Math.random() * (6 - 1 + 1)) + 1)
+
   return (
     <main>
       <div className="container">
