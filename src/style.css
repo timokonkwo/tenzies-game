@@ -42,7 +42,7 @@ header {
 }
 
 .game__description{
-    width: 300px
+    width: 290px
 }
 
 .game {
@@ -50,16 +50,24 @@ header {
     grid-template-columns: repeat(5, max-content);
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: 1.2rem;
 
 }
 
 .game div {
-    padding: 1rem;
+    padding: .75rem;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, .15);
+    font-weight: bold;
+    border-radius: 4px;
 }
 
 .roll__button {
-    padding: .75rem 1.5rem;
+    padding: .75rem 2rem;
     justify-self: center;
+    background-color: #5035FF;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    color: #fff;
+    border-radius: .3rem;
 }
