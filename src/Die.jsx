@@ -1,14 +1,13 @@
 import { useState } from "react"
 
-export default function Die(prop){
-    const [selected, setSelected] = useState(false);
-
+export default function Die(props){
+    
     return (
         <div 
-            className={selected ? "selected": ""}
-            onClick={() => setSelected(!selected)}
+            className={props.isHeld ? "selected": ""}
+            onClick={() => props.select(props.id)}
         >
-            {prop.number}
+            {props.number}
             </div>
     )
 }
