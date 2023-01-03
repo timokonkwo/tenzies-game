@@ -1,9 +1,16 @@
 import "./style.css"
 import Die from "./Die"
+import { useState } from "react"
 
 function App(){
 
-  const allNewDice = () => Array.from({length: 10}, () => Math.floor(Math.random() * (6 - 1 + 1)) + 1)
+  
+
+  const allNewDice = () => Array.from({length: 10}, () => Math.ceil(Math.random() * 6))
+
+  const [diceValues, setDiceValues] = useState(allNewDice())
+
+  const dice = diceValues.map(value => <Die number={value}/>)
 
   return (
     <main>
@@ -17,16 +24,7 @@ function App(){
           </header>
 
           <div className="game">
-            <Die number={4}/>
-            <Die number={1}/>
-            <Die number={2}/>
-            <Die number={6}/>
-            <Die number={3}/>
-            <Die number={1}/>
-            <Die number={5}/>
-            <Die number={3}/>
-            <Die number={5}/>
-            <Die number={4}/>
+            {dice}
           </div>
 
           <button className="roll__button">Roll</button>
