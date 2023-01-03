@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&display=swap');
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding:0;
+}
+
+.container {
+    font-family:  'Karla', sans-serif;;
+    width: 500px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% ,-50%);
+    background-color: #0B2434;
+    padding: 1.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game__board {
+    width: 450px;
+    background-color: #fff;
+    border-radius: .5rem;
+    padding: 2rem;
+    display: grid;
+    gap: 2rem;
+}
+
+header {
+    text-align: center;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.game__title {
+    font-weight: bolder;
+}
+
+.game__description{
+    width: 300px
+}
+
+.game {
+    display: grid;
+    grid-template-columns: repeat(5, max-content);
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+}
+
+.game div {
+    padding: 1rem;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, .15);
+}
+
+.roll__button {
+    padding: .75rem 1.5rem;
+    justify-self: center;
+}
