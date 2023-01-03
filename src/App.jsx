@@ -1,4 +1,5 @@
 import "./style.css"
+import Die from "./Die"
 
 function App(){
 
@@ -14,16 +15,16 @@ function App(){
           </header>
 
           <div className="game">
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
-            <div>9</div>
-            <div>0</div>
+            <Die number={4}/>
+            <Die number={1}/>
+            <Die number={2}/>
+            <Die number={6}/>
+            <Die number={3}/>
+            <Die number={1}/>
+            <Die number={5}/>
+            <Die number={3}/>
+            <Die number={5}/>
+            <Die number={4}/>
           </div>
 
           <button className="roll__button">Roll</button>
