@@ -1,99 +1,80 @@
+import { useState } from "react";
 import "./style.css";
 import Die from "./Die";
-import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
+import { useEffect } from "react";
+import Confetti from 'react-confetti'
 
-function App() {
-	const allNewDice = () => {
-		const elements = Array.from({ length: 10 }, () =>
-			Math.ceil(Math.random() * 6)
-		).map((number) => ({ value: number, isHeld: false, id: nanoid() }));
-
-		return elements;
-	};
-
-	const [diceValues, setDiceValues] = useState(allNewDice());
-	const [game, setGame] = useState({ numbers: [], win: false });
+export default function App() {
+	const [dice, setDice] = useState(allNewDice());
 	const [win, setWin] = useState(false);
 
+
 	useEffect(() => {
-		checkWin();
-	}, [game]);
+		// Javascript .every() method returns true if all elements meets the condition applied to it.
+		const allHeld = dice.every(die => die.isHeld);
+		const allSame = dice.every(die => die.value === dice[0].value)
 
-	const selectDie = (id) => {
-		setDiceValues((items) => {
-			const newDice = [];
+		allHeld && allSame ? setWin(true) : ""
 
-			for (let i = 0; i < diceValues.length; i++) {
-				const currentDie = items[i];
-				if (currentDie.id === id) {
-					newDice.push({
-						...currentDie,
-						isHeld: !currentDie.isHeld,
-					});
-				} else {
-					newDice.push(currentDie);
-				}
-			}
+	}, [dice]);
 
-			const held = newDice.filter((item) => item.isHeld);
+	function generateNewDie() {
+		return {
+			id: nanoid(),
+			value: Math.ceil(Math.random() * 6),
+			isHeld: false,
+		};
+	}
 
-			setGame(() => ({
-				...game,
-				numbers: held.map((item) => item.value),
-			}));
+	// function to generate a random 10 dice
+	function allNewDice() {
+		const newDice = [];
 
-			return newDice;
-		});
-	};
-
-	const checkWin = () => {
-		let total;
-		game.numbers.length > 0
-			? (total = game.numbers.reduce((total, current) => total + current))
-			: "";
-
-		total / 10 === game.numbers[1] ? setWin(true) : null;
-	};
-
-	const rollDice = (dice) => {
-		const newDiceElements = [];
-
-		for (let i = 0; i < dice.length; i++) {
-			if (dice[i].isHeld) {
-				newDiceElements.push(dice[i]);
-				// heldItems.push(dice[i].value)
-			} else {
-				newDiceElements.push({
-					value: Math.ceil(Math.random() * 6),
-					isHeld: false,
-					id: nanoid(),
-				});
-			}
+		for (let i = 0; i < 10; i++) {
+			newDice.push(generateNewDie());
 		}
 
-		setDiceValues(newDiceElements);
-	};
+		return newDice;
+	}
 
-  const resetGame = () => {
-    setDiceValues(allNewDice())
-    setGame({ numbers: [], win: false })
-    setWin(false)
-  }
+	// Function to roll the dice not held and randomize them
+	function rollDice() {
 
-	const dice = diceValues.map((item) => (
+		if (!win){
+			setDice((oldDice) =>
+			oldDice.map((die) => {
+				return die.isHeld ? die : generateNewDie();
+			})
+		);
+		} else {
+			setDice(allNewDice())
+			setWin(false)
+		}
+	}
+
+	// Function to hold a dice
+	function holdDice(id) {
+		setDice((oldDice) =>
+			oldDice.map((die) => {
+				return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
+			})
+		);
+	}
+
+	const diceElements = dice.map((die) => (
 		<Die
-			key={item.id}
-			id={item.id}
-			isHeld={item.isHeld}
-			number={item.value}
-			select={selectDie}
+			key={die.id}
+			value={die.value}
+			isHeld={die.isHeld}
+			holdDice={() => holdDice(die.id)}
 		/>
 	));
 
 	return (
 		<main>
 			<div className="container">
+				{win && <Confetti/> }
 				<section className="game__board">
 					<header>
 						<h1 className="game__title">Tenzies</h1>
@@ -103,27 +84,13 @@ function App() {
 						</p>
 					</header>
 
-					<div className="game">{dice}</div>
+					<div className="game">{diceElements}</div>
 
-					{win ? (
-						<button
-							className="roll__button"
-							onClick={resetGame}
-						>
-							reset
-						</button>
-					) : (
-						<button
-							className="roll__button"
-							onClick={() => rollDice(diceValues)}
-						>
-							roll
-						</button>
-					)}
+					<button className="roll__button" onClick={rollDice}>
+						{win ? "New Game" : "Roll"}
+					</button>
 				</section>
 			</div>
 		</main>
 	);
 }
-
-export default App;
