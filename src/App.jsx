@@ -1,94 +1,31 @@
+import { useState } from "react";
 import "./style.css";
 import Die from "./Die";
-import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
 function App() {
-	const allNewDice = () => {
-		const elements = Array.from({ length: 10 }, () =>
-			Math.ceil(Math.random() * 6)
-		).map((number) => ({ value: number, isHeld: false, id: nanoid() }));
+	const [dice, setDice] = useState(allNewDice());
 
-		return elements;
-	};
+	function allNewDice() {
+		const newDice = [];
 
-	const [diceValues, setDiceValues] = useState(allNewDice());
-	const [game, setGame] = useState({ numbers: [], win: false });
-	const [win, setWin] = useState(false);
-
-	useEffect(() => {
-		checkWin();
-	}, [game]);
-
-	const selectDie = (id) => {
-		setDiceValues((items) => {
-			const newDice = [];
-
-			for (let i = 0; i < diceValues.length; i++) {
-				const currentDie = items[i];
-				if (currentDie.id === id) {
-					newDice.push({
-						...currentDie,
-						isHeld: !currentDie.isHeld,
-					});
-				} else {
-					newDice.push(currentDie);
-				}
-			}
-
-			const held = newDice.filter((item) => item.isHeld);
-
-			setGame(() => ({
-				...game,
-				numbers: held.map((item) => item.value),
-			}));
-
-			return newDice;
-		});
-	};
-
-	const checkWin = () => {
-		let total;
-		game.numbers.length > 0
-			? (total = game.numbers.reduce((total, current) => total + current))
-			: "";
-
-		total / 10 === game.numbers[1] ? setWin(true) : null;
-	};
-
-	const rollDice = (dice) => {
-		const newDiceElements = [];
-
-		for (let i = 0; i < dice.length; i++) {
-			if (dice[i].isHeld) {
-				newDiceElements.push(dice[i]);
-				// heldItems.push(dice[i].value)
-			} else {
-				newDiceElements.push({
-					value: Math.ceil(Math.random() * 6),
-					isHeld: false,
-					id: nanoid(),
-				});
-			}
+		for (let i = 0; i < 10; i++) {
+			newDice.push({
+				id: nanoid(),
+				value: Math.ceil(Math.random() * 6),
+				isHeld: false,
+			});
 		}
 
-		setDiceValues(newDiceElements);
-	};
+		return newDice;
+	}
 
-  const resetGame = () => {
-    setDiceValues(allNewDice())
-    setGame({ numbers: [], win: false })
-    setWin(false)
-  }
+	function rollDice() {
+		setDice(allNewDice());
+	}
 
-	const dice = diceValues.map((item) => (
-		<Die
-			key={item.id}
-			id={item.id}
-			isHeld={item.isHeld}
-			number={item.value}
-			select={selectDie}
-		/>
+	const diceElements = dice.map((die) => (
+		<Die key={die.id} value={props.value} isHeld={die.isHeld} />
 	));
 
 	return (
@@ -103,23 +40,11 @@ function App() {
 						</p>
 					</header>
 
-					<div className="game">{dice}</div>
+					<div className="game">{diceElements}</div>
 
-					{win ? (
-						<button
-							className="roll__button"
-							onClick={resetGame}
-						>
-							reset
-						</button>
-					) : (
-						<button
-							className="roll__button"
-							onClick={() => rollDice(diceValues)}
-						>
-							roll
-						</button>
-					)}
+					<button className="roll__button" onClick={rollDice}>
+						Roll
+					</button>
 				</section>
 			</div>
 		</main>

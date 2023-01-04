@@ -7,7 +7,7 @@ export default function Die(props){
             className={props.isHeld ? "selected": ""}
             onClick={() => props.select(props.id)}
         >
-            {props.number}
+            {props.value}
             </div>
     )
 }
