@@ -31,10 +31,9 @@ export default function App() {
 	const diceElements = dice.map((die) => (
 		<Die
 			key={die.id}
-			id={die.id}
 			value={die.value}
-			sHeld={die.isHeld}
-			oldDice={holdDice}
+			isHeld={die.isHeld}
+			holdDice={()=> holdDice(die.id)}
 		/>
 	));
 
