@@ -40,11 +40,17 @@ export default function App() {
 
 	// Function to roll the dice not held and randomize them
 	function rollDice() {
-		setDice((oldDice) =>
+
+		if (!win){
+			setDice((oldDice) =>
 			oldDice.map((die) => {
 				return die.isHeld ? die : generateNewDie();
 			})
 		);
+		} else {
+			setDice(allNewDice())
+			setWin(false)
+		}
 	}
 
 	// Function to hold a dice
