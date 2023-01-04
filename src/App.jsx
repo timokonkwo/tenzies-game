@@ -3,6 +3,7 @@ import "./style.css";
 import Die from "./Die";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
+import Confetti from 'react-confetti'
 
 export default function App() {
 	const [dice, setDice] = useState(allNewDice());
@@ -14,7 +15,7 @@ export default function App() {
 		const allHeld = dice.every(die => die.isHeld);
 		const allSame = dice.every(die => die.value === dice[0].value)
 
-		allHeld && allSame ? console.log("won") : ""
+		allHeld && allSame ? setWin(true) : ""
 
 	}, [dice]);
 
@@ -67,6 +68,7 @@ export default function App() {
 	return (
 		<main>
 			<div className="container">
+				{win && <Confetti/> }
 				<section className="game__board">
 					<header>
 						<h1 className="game__title">Tenzies</h1>
@@ -79,7 +81,7 @@ export default function App() {
 					<div className="game">{diceElements}</div>
 
 					<button className="roll__button" onClick={rollDice}>
-						Roll
+						{win ? "New Game" : "Roll"}
 					</button>
 				</section>
 			</div>
