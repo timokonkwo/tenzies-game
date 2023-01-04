@@ -6,6 +6,7 @@ import { nanoid } from "nanoid";
 export default function App() {
 	const [dice, setDice] = useState(allNewDice());
 
+	// function to generate a random 10 dice
 	function allNewDice() {
 		const newDice = [];
 
@@ -20,37 +21,17 @@ export default function App() {
 		return newDice;
 	}
 
+	// Function to roll the dice not held and randomize them
 	function rollDice() {
 		setDice(allNewDice());
 	}
 
-	/**
-	 * Challenge: Update the `holdDice` function to flip
-	 * the `isHeld` property on the object in the array
-	 * that was clicked, based on the `id` prop passed
-	 * into the function.
-	 *
-	 * Hint: as usual, there's > 1 way to accomplish this.
-	 * I'll be using `dice.map()` and checking for the `id`
-	 * of the die to determine which one to flip `isHeld` on,
-	 * but you can do whichever way makes the most sense to you.
-	 */
-
+	// Function to hold a dice
 	function holdDice(id) {
-		const newDice = [];
-		
-		dice.map(die => {
-			if (die.id === id){
-				newDice.push({
-					...die,
-					isHeld: !die.isHeld
-				})
-			} else {
-				newDice.push(die)
-			}
-		})
-
-		setDice(newDice);
+		setDice(oldDice => oldDice.map(die => {
+			return die.id === id ? {...die, isHeld: !die.isHeld}
+			: die
+		}));
 	}
 
 	const diceElements = dice.map((die) => (
