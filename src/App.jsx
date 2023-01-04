@@ -23,15 +23,26 @@ export default function App() {
 
 	// Function to roll the dice not held and randomize them
 	function rollDice() {
-		setDice(allNewDice());
+		setDice((oldDice) =>
+			oldDice.map((die) => {
+				return die.isHeld
+					? { ...die }
+					: {
+						...die,
+						id: nanoid(),
+						value: Math.ceil(Math.random() * 6),
+					  };
+			})
+		);
 	}
 
 	// Function to hold a dice
 	function holdDice(id) {
-		setDice(oldDice => oldDice.map(die => {
-			return die.id === id ? {...die, isHeld: !die.isHeld}
-			: die
-		}));
+		setDice((oldDice) =>
+			oldDice.map((die) => {
+				return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
+			})
+		);
 	}
 
 	const diceElements = dice.map((die) => (
