@@ -62,6 +62,7 @@ export default function App() {
 		);
 	}
 
+	// map through the dice and create the components
 	const diceElements = dice.map((die) => (
 		<Die
 			key={die.id}
