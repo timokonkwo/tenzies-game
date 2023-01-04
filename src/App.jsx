@@ -2,16 +2,32 @@ import { useState } from "react";
 import "./style.css";
 import Die from "./Die";
 import { nanoid } from "nanoid";
+import { useEffect } from "react";
 
 export default function App() {
 	const [dice, setDice] = useState(allNewDice());
+	const [win, setWin] = useState(false);
 
-	function generateNewDie(){
+	/**
+	 * Challenge: Check the dice array for these winning conditions:
+	 * 1. All dice are held, and
+	 * 2. all dice have the same value
+	 *
+	 * If both conditions are true, set `tenzies` to true and log
+	 * "You won!" to the console
+	 */
+	useEffect(() => {
+		const checkDice = dice.map(die => die.isHeld ? die.value :null).filter(die => die != null)
+		checkDice.length === 10 && checkDice.reduce((val, item) => val + item) === checkDice[0] * 10 ? setWin(true) : ""
+
+	}, [dice]);
+
+	function generateNewDie() {
 		return {
 			id: nanoid(),
 			value: Math.ceil(Math.random() * 6),
 			isHeld: false,
-		}
+		};
 	}
 
 	// function to generate a random 10 dice
@@ -29,9 +45,7 @@ export default function App() {
 	function rollDice() {
 		setDice((oldDice) =>
 			oldDice.map((die) => {
-				return die.isHeld
-					? die
-					: generateNewDie()
+				return die.isHeld ? die : generateNewDie();
 			})
 		);
 	}
