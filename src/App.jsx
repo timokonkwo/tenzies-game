@@ -8,17 +8,13 @@ export default function App() {
 	const [dice, setDice] = useState(allNewDice());
 	const [win, setWin] = useState(false);
 
-	/**
-	 * Challenge: Check the dice array for these winning conditions:
-	 * 1. All dice are held, and
-	 * 2. all dice have the same value
-	 *
-	 * If both conditions are true, set `tenzies` to true and log
-	 * "You won!" to the console
-	 */
+
 	useEffect(() => {
-		const checkDice = dice.map(die => die.isHeld ? die.value :null).filter(die => die != null)
-		checkDice.length === 10 && checkDice.reduce((val, item) => val + item) === checkDice[0] * 10 ? setWin(true) : ""
+		// Javascript .every() method returns true if all elements meets the condition applied to it.
+		const allHeld = dice.every(die => die.isHeld);
+		const allSame = dice.every(die => die.value === dice[0].value)
+
+		allHeld && allSame ? console.log("won") : ""
 
 	}, [dice]);
 
