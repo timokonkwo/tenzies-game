@@ -16,7 +16,7 @@
     transform: translate(-50% ,-50%);
     background-color: #0B2434;
     padding: 1.5rem 1rem;
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
 }
@@ -30,11 +30,24 @@
     gap: 2rem;
 }
 
+@media screen and (max-width: 575px){
+
+    .container {
+        max-width: 350px;
+    }
+    .game__board{
+        max-width: 300px;
+        row-gap: 2.3rem;
+        padding: 3rem 0;
+    }
+}
+
 header {
     text-align: center;
     display: grid;
     justify-content: center;
     align-items: center;
+    gap: .5rem;
 }
 
 .game__title {
