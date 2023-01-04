@@ -3,7 +3,7 @@ import "./style.css";
 import Die from "./Die";
 import { nanoid } from "nanoid";
 
-function App() {
+export default function App() {
 	const [dice, setDice] = useState(allNewDice());
 
 	function allNewDice() {
@@ -24,8 +24,18 @@ function App() {
 		setDice(allNewDice());
 	}
 
+	function holdDice(id) {
+		console.log(id);
+	}
+
 	const diceElements = dice.map((die) => (
-		<Die key={die.id} value={die.value} isHeld={die.isHeld} />
+		<Die
+			key={die.id}
+			id={die.id}
+			value={die.value}
+			sHeld={die.isHeld}
+			oldDice={holdDice}
+		/>
 	));
 
 	return (
@@ -50,5 +60,3 @@ function App() {
 		</main>
 	);
 }
-
-export default App;
