@@ -1,11 +1,10 @@
 import "./style.css";
 import Die from "./Die";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
 function App() {
-	const allNewDice = (dice) => {
-
+	const allNewDice = () => {
 		const elements = Array.from({ length: 10 }, () =>
 			Math.ceil(Math.random() * 6)
 		).map((number) => ({ value: number, isHeld: false, id: nanoid() }));
@@ -14,6 +13,12 @@ function App() {
 	};
 
 	const [diceValues, setDiceValues] = useState(allNewDice());
+	const [game, setGame] = useState({ numbers: [], win: false });
+	const [win, setWin] = useState(false);
+
+	useEffect(() => {
+		checkWin();
+	}, [game]);
 
 	const selectDie = (id) => {
 		setDiceValues((items) => {
@@ -25,28 +30,55 @@ function App() {
 					newDice.push({
 						...currentDie,
 						isHeld: !currentDie.isHeld,
-					});3
+					});
 				} else {
 					newDice.push(currentDie);
 				}
 			}
 
+			const held = newDice.filter((item) => item.isHeld);
+
+			setGame(() => ({
+				...game,
+				numbers: held.map((item) => item.value),
+			}));
+
 			return newDice;
 		});
 	};
 
-  const rollDice = (dice) => {
+	const checkWin = () => {
+		let total;
+		game.numbers.length > 0
+			? (total = game.numbers.reduce((total, current) => total + current))
+			: "";
 
-    const newDiceElements = [];
+		total / 10 === game.numbers[1] ? setWin(true) : null;
+	};
 
-    for (let i = 0; i < dice.length; i++){
-      dice[i].isHeld ? newDiceElements.push(dice[i]) : newDiceElements.push({
-        value: Math.ceil(Math.random() * 6),
-        isHeld: false, 
-        id: nanoid() 
-      })
-    }
-    setDiceValues(newDiceElements)
+	const rollDice = (dice) => {
+		const newDiceElements = [];
+
+		for (let i = 0; i < dice.length; i++) {
+			if (dice[i].isHeld) {
+				newDiceElements.push(dice[i]);
+				// heldItems.push(dice[i].value)
+			} else {
+				newDiceElements.push({
+					value: Math.ceil(Math.random() * 6),
+					isHeld: false,
+					id: nanoid(),
+				});
+			}
+		}
+
+		setDiceValues(newDiceElements);
+	};
+
+  const resetGame = () => {
+    setDiceValues(allNewDice())
+    setGame({ numbers: [], win: false })
+    setWin(false)
   }
 
 	const dice = diceValues.map((item) => (
@@ -73,12 +105,21 @@ function App() {
 
 					<div className="game">{dice}</div>
 
-					<button
-						className="roll__button"
-						onClick={() => rollDice(diceValues)}
-					>
-						Roll
-					</button>
+					{win ? (
+						<button
+							className="roll__button"
+							onClick={resetGame}
+						>
+							reset
+						</button>
+					) : (
+						<button
+							className="roll__button"
+							onClick={() => rollDice(diceValues)}
+						>
+							roll
+						</button>
+					)}
 				</section>
 			</div>
 		</main>
